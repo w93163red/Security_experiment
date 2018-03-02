@@ -45,7 +45,7 @@ def test(delta):
 
         # check if a task misses deadline
         for job in ready_queue:
-            if job.deadline < time:
+            if job.deadline <= time:
                 print("time: ", time)
                 print("%s misses deadline!" % job.name)
                 exit(-1)
@@ -69,12 +69,12 @@ def test(delta):
             r1 = 0
             r2 = 0
             for j in range(0, i):
-                r1 = ready_queue[i].remain_work
-                r2 = math.ceil((ready_queue[i].deadline - ready_queue[j].deadline) / ready_queue[j].period) * \
+                r1 += ready_queue[i].remain_work
+                r2 += math.ceil((ready_queue[i].deadline - ready_queue[j].deadline) / ready_queue[j].period) * \
                      ready_queue[j].wcet
             b = b - r1 - r2
             budget.append(b)
-
+        print("Budget: ", budget)
         # random selection
         pi = []
         str_ready = ""
@@ -84,6 +84,7 @@ def test(delta):
         for i in range(0, len(ready_queue)):
             job = ready_queue[i]
             str_ready += job.name + " "
+            print(job)
             pi.append(job.remain_work / budget[i])
             # this job must be executed, otherwise it will miss deadline
             if job.remain_work / budget[i] == 1:
@@ -132,7 +133,6 @@ def test(delta):
         print("---------------------\n")
 
     print("ENTROPY_TOTAL:", entropy_total)
-
 
 
 if __name__ == "__main__":
