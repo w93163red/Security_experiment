@@ -69,7 +69,7 @@ def test(delta):
             r1 = 0
             r2 = 0
             for j in range(0, i):
-                r1 += ready_queue[i].remain_work
+                r1 += ready_queue[j].remain_work
                 r2 += math.ceil((ready_queue[i].deadline - ready_queue[j].deadline) / ready_queue[j].period) * \
                      ready_queue[j].wcet
             b = b - r1 - r2
@@ -136,5 +136,5 @@ def test(delta):
 
 
 if __name__ == "__main__":
-    test(delta=5)
+    test(delta=40)
 
