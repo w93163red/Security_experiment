@@ -20,10 +20,10 @@ class Job:
         return "name: " + self.name +" remain = " + str(self.remain_work) + " deadline = " + str(self.deadline)
 
 def test(delta):
-    t1 = Task(1.0, 4.0, "t1")
-    t2 = Task(3.0, 8.0, "t2")
-    t3 = Task(3.0, 16.0, "t3")
-    t4 = Task(1.0, 16.0, "t4")
+    t1 = Task(10, 40, "t1")
+    t2 = Task(30, 80, "t2")
+    t3 = Task(30, 160, "t3")
+    t4 = Task(10, 160, "t4")
 
     task_list = [t1, t2, t3, t4]
 
@@ -31,10 +31,10 @@ def test(delta):
         print(task)
     print("\n")
 
-    hyper_period = 32
+    hyper_period = 320
     ready_queue = []
     time = 0
-    period = 16
+    period = 160
     entropy_total = 0
     # simulate the scheduler
     while time < hyper_period:
@@ -42,10 +42,11 @@ def test(delta):
             print("period_entropy: ", entropy_total)
             entropy_total = 0
 
-        print("time: ", time)
+
         # check if a task misses deadline
         for job in ready_queue:
             if job.deadline < time:
+                print("time: ", time)
                 print("%s misses deadline!" % job.name)
                 exit(-1)
 
@@ -54,8 +55,10 @@ def test(delta):
                 ready_queue.append(Job(task.wcet, task.period + time, task.period, task.name))
 
         if time % delta != 0:
-            time += 0.1
+            time += 1
             continue
+
+        print("time: ", time)
 
         ready_queue.sort(key=lambda x: x.deadline)
 
@@ -125,7 +128,7 @@ def test(delta):
             print(select)
 
         print("ENTROPY= ", entropy)
-        time += 0.1
+        time += 1
         print("---------------------\n")
 
     print("ENTROPY_TOTAL:", entropy_total)
@@ -133,5 +136,5 @@ def test(delta):
 
 
 if __name__ == "__main__":
-    test(delta=0.3)
+    test(delta=5)
 
